@@ -33,7 +33,7 @@ def register():
         user = User(username=form.username.data, email = form.email.data, password = form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(f'Cuenta creada satisfactoriamente{form.username.data}', category = 'success')
+        flash(f'Cuenta creada satisfactoriamente {form.username.data}', category = 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register',form=form)
 
@@ -50,5 +50,5 @@ def login():
             return redirect(url_for('user'))
         else:
             flash (f'Login insatisfactorio{form.email.data}',category ='danger')
-            return redirect(url_for('homepage'))
+            
     return render_template('login.html', title='LogIn',form=form)
