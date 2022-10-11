@@ -44,7 +44,8 @@ def register():
 def login():
     form=LoginForm()
     if form.validate_on_submit():
-        if form.email.data== 'osja1601@gmail.com' and form.password.data == '12345':
+        user=User.query.filter_by(email = form.email.data).first()
+        if form.email.data== user.email and form.password.data == user.password:
             flash (f'Login satisfactorio{form.email.data}',category ='succes')
             return redirect(url_for('user'))
         else:
