@@ -40,15 +40,16 @@ def register():
 
 
 
-@app.route('/login',methods=['POST','GET'])
+
+@app.route('/login', methods=['POST', 'GET'])
 def login():
     form=LoginForm()
     if form.validate_on_submit():
-        user=User.query.filter_by(email = form.email.data).first()
-        if form.email.data== user.email and form.password.data == user.password:
-            flash (f'Login satisfactorio{form.email.data}',category ='succes')
+        user=User.query.filter_by(email=form.email.data).first()
+        if form.email.data==user.email and form.password.data==user.password:
+            flash(f'Login successful for {form.email.data}', category='success')
+
             return redirect(url_for('user'))
         else:
-            flash (f'Login insatisfactorio{form.email.data}',category ='danger')
-            
-    return render_template('login.html', title='LogIn',form=form)
+            flash(f'Login unsuccessful for {form.email.data}', category='danger')
+    return render_template('login.html', title='Login', form=form)
