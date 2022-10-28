@@ -1,10 +1,10 @@
-#from bcrypt import methods
+
 from codejana_flask import app, db, bcrypt
 from sre_constants import SUCCESS
 from flask import Flask, render_template,redirect,url_for,flash
 from codejana_flask.forms import RegistrationForm, LoginForm
 from codejana_flask.models import User 
- 
+from flask_login import login_user, logout_user, current_user, login_required
 
 @app.route('/')
 @app.route('/home')
@@ -48,9 +48,15 @@ def login():
     if form.validate_on_submit():
         user=User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password,form.password.data):
+            login_user(user)
             flash(f'Login successful for {form.email.data}', category='success')
 
             return redirect(url_for('user'))
         else:
             flash(f'Login unsuccessful for {form.email.data}', category='danger')
     return render_template('login.html', title='Login', form=form)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
