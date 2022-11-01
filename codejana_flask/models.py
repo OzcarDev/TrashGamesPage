@@ -1,10 +1,14 @@
 from codejana_flask import db,login_manager
 from datetime import datetime
 from flask_login import UserMixin
-
+from flask import redirect, url_for
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('register'))
 
 class User(db.Model,UserMixin):
     id=db.Column(db.Integer, primary_key=True)

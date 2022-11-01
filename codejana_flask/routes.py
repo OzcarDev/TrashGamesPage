@@ -28,6 +28,8 @@ def user():
 
 @app.route('/register',methods=['POST','GET'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('user'))
     form=RegistrationForm()
     if form.validate_on_submit():
         encrypted_password=bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -44,6 +46,8 @@ def register():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('user'))
     form=LoginForm()
     if form.validate_on_submit():
         user=User.query.filter_by(email=form.email.data).first()
